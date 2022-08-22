@@ -1,16 +1,33 @@
-import React from "react";
 import "./App.css";
-import AddTaskForm from "./components/addTaskForm";
-import ThingsToDo from "./components/thingsToDo";
-import ThingsTotal from "./components/thingsTotal";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getTask } from "./taskState";
 
 function App() {
+  const dispatch = useDispatch();
+  const task = useSelector((state) => state.task.tasks);
+
+  useEffect(() => {
+    dispatch(getTask());
+  }, [dispatch]);
+  console.log(task);
   return (
-    <div className="container bg-white p-4 mt-5">
-      <h1>Lista de Tareas </h1>
-      <AddTaskForm />
-      <ThingsToDo />
-      <ThingsTotal />
+    <div className="App">
+      <h1>Cosas por hacer</h1>
+      <p> Lista de tareas por hacer </p>
+      <hr />
+      <div className="task-list">
+        {task.map((task) => (
+          <img
+            key={task.id}
+            alt={task.author}
+            src={task.download_url}
+            width="400"
+            height="400"
+          />
+        ))}
+      </div>
+      <button>Ver más</button>
     </div>
   );
 }
